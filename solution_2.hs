@@ -1,14 +1,19 @@
+getPrefix :: String -> String
+getPrefix []       = []
+getPrefix (' ':xs) = []
+getPrefix (x:xs)   = x: getPrefix xs
+
+getValue :: String -> String -> Int
+getValue command prefix = read (drop (1 + length prefix) command)
+
 move :: (Int, Int) -> String -> (Int, Int)
 move (x, y) command
-  | isPrefix up command      = (x, y - read (drop (length up) command))
-  | isPrefix down command    = (x, y + read (drop (length down) command))
-  | isPrefix forward command = (x + read (drop (length forward) command), y)
-  | otherwise                   = error ("Command not defined in string '" ++ command ++ "'")
-  where up = "up "
-        down = "down "
-        forward = "forward "
-        isPrefix :: String -> String -> Bool
-        isPrefix a b = take (length a) b == a
+  | prefix == "up"      = (x, y - value)
+  | prefix == "down"    = (x, y + value)
+  | prefix == "forward" = (x + value, y)
+  | otherwise           = error ("Command not defined in string '" ++ command ++ "'")
+  where prefix = getPrefix "" command
+        value = getValue command prefix
 
 main = do
   let output = foldl move initPos input 
