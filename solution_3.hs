@@ -1,11 +1,19 @@
 {-# OPTIONS_GHC -Wall #-}
 
 import qualified Data.List as List
+import Data.Maybe (mapMaybe)
 
-countBinary :: Char -> (Int, Int) -> (Int, Int)
-countBinary '0' (a,b) = (a + 1, b)
-countBinary '1' (a,b) = (a, b + 1)
-countBinary x _ = error ("Non-binary character found: " ++ show x)
+data Bin = O | I
+
+countBinary :: Bin -> (Int, Int) -> (Int, Int)
+countBinary O (a,b) = (a + 1, b)
+countBinary I (a,b) = (a, b + 1)
+
+parseBinary :: Char -> Maybe Bin
+parseBinary '0' = Just O
+parseBinary '1' = Just I
+parseBinary _ = Nothing
+
 
 binarySequence :: [Int]
 binarySequence = fmap (2^) [0 :: Int ..]
@@ -35,5 +43,5 @@ main = do
   print ("Epsilon Rate: " ++ epsilonRate)
   print ("Power Consumption: " ++ show powerConsumption)
   where
-    input = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
+    input = fmap (mapMaybe parseBinary) ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
 
