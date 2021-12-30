@@ -38,7 +38,7 @@ move (x, y) (MoveCommand Forward value) = (x + value, y)
 
 main :: IO ()
 main = do
-  let output = foldl move initPos
+  let output = foldr (flip move) initPos
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
