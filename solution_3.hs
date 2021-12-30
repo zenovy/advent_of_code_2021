@@ -6,7 +6,7 @@ countBinary (a,b) '1' = (a, b + 1)
 countBinary _ x = error ("Non-binary character found: " ++ show x)
 
 binarySequence :: [Int]
-binarySequence = map (2^) [0..]
+binarySequence = fmap (2^) [0..]
 
 boolToBin :: Bool -> Char
 boolToBin True = '1'
@@ -18,13 +18,13 @@ binToNum '1' = 1
 binToNum _ = error "Not a binary number"
 
 binToInt :: String -> Int
-binToInt str = let binaryNum = map binToNum (reverse str)
-               in sum (map (uncurry (*)) (zip binarySequence binaryNum))
+binToInt str = let binaryNum = fmap binToNum (reverse str)
+               in sum (fmap (uncurry (*)) (zip binarySequence binaryNum))
 
 main = do
   let tinput = List.transpose input
-  let count = map (foldl countBinary (0,0)) tinput
-  let rate f = map boolToBin (map (uncurry f) count)
+  let count = fmap (foldl countBinary (0,0)) tinput
+  let rate f = fmap boolToBin (fmap (uncurry f) count)
   let gammaRate = rate (>)
   let epsilonRate = rate (<)
   let powerConsumption = (binToInt gammaRate) * (binToInt epsilonRate)
