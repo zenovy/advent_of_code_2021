@@ -1,6 +1,7 @@
 {-# OPTIONS_GHC -Wall #-}
 
 import Data.Maybe (mapMaybe)
+import Text.Read (readMaybe)
 
 data Direction = Up | Down | Forward
 
@@ -18,10 +19,11 @@ data MoveCommand = MoveCommand
 parseMoveCommand :: String -> Maybe MoveCommand
 parseMoveCommand command = do
   let (unparsed_direction, unparsed_value) = break (== ' ') command
-  -- If we fail to parse the direction, we will fail to parse the entire move
-  -- command
+  -- If we fail to parse the direction or the value, we will fail to parse the
+  -- entire move command
   direction <- parseDirection unparsed_direction
-  pure $ MoveCommand direction $ read $ drop 1 unparsed_value
+  value     <- readMaybe $ drop 1 unparsed_value
+  pure $ MoveCommand direction value
 
 move :: MoveCommand -> (Int, Int) -> (Int, Int)
 move (MoveCommand Up value) (x, y) = (x, y - value)
