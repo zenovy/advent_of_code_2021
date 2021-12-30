@@ -8,7 +8,7 @@ countBinary '1' (a,b) = (a, b + 1)
 countBinary x _ = error ("Non-binary character found: " ++ show x)
 
 binarySequence :: [Int]
-binarySequence = fmap (2^) [0..]
+binarySequence = fmap (2^) [0 :: Int ..]
 
 boolToBin :: Bool -> Char
 boolToBin True = '1'
