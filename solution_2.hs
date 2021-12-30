@@ -29,10 +29,16 @@ data Pos = Pos
   }
   deriving Show
 
+-- A semigroup is any type which can be smushed into itself. Here we define
+-- smushing via pointwise addition.
+instance Semigroup Pos where
+  Pos x1 y1 <> Pos x2 y2 = Pos (x1 + x2) (y1 + y2)
+
+
 move :: MoveCommand -> Pos -> Pos
-move (MoveCommand Up value) (Pos x y) = Pos x (y - value)
-move (MoveCommand Down value) (Pos x y) = Pos x (y + value)
-move (MoveCommand Forward value) (Pos x y) = Pos (x + value) y
+move (MoveCommand Up value) pos = pos <> Pos 0 (-value)
+move (MoveCommand Down value) pos = pos <> Pos 0 value
+move (MoveCommand Forward value) pos = pos <> Pos value 0
 
 main :: IO ()
 main = do
