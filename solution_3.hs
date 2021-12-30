@@ -1,9 +1,9 @@
 import qualified Data.List as List
 
-countBinary :: (Int, Int) -> Char -> (Int, Int)
-countBinary (a,b) '0' = (a + 1, b)
-countBinary (a,b) '1' = (a, b + 1)
-countBinary _ x = error ("Non-binary character found: " ++ show x)
+countBinary :: Char -> (Int, Int) -> (Int, Int)
+countBinary '0' (a,b) = (a + 1, b)
+countBinary '1' (a,b) = (a, b + 1)
+countBinary x _ = error ("Non-binary character found: " ++ show x)
 
 binarySequence :: [Int]
 binarySequence = fmap (2^) [0..]
@@ -23,7 +23,7 @@ binToInt str = let binaryNum = fmap binToNum (reverse str)
 
 main = do
   let tinput = List.transpose input
-  let count = fmap (foldl countBinary (0,0)) tinput
+  let count = fmap (foldr countBinary (0,0)) tinput
   let rate f = fmap boolToBin (fmap (uncurry f) count)
   let gammaRate = rate (>)
   let epsilonRate = rate (<)
