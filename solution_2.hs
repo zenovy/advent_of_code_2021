@@ -2,12 +2,6 @@
 
 import Data.Maybe (mapMaybe)
 
-getPrefix :: String -> String
-getPrefix = takeWhile (/= ' ')
-
-getValue :: String -> String -> Int
-getValue command prefix = read (drop (1 + length prefix) command)
-
 data Direction = Up | Down | Forward
 
 parseDirection :: String -> Maybe Direction
@@ -23,13 +17,11 @@ data MoveCommand = MoveCommand
 
 parseMoveCommand :: String -> Maybe MoveCommand
 parseMoveCommand command = do
+  let (unparsed_direction, unparsed_value) = break (== ' ') command
   -- If we fail to parse the direction, we will fail to parse the entire move
   -- command
-  direction <- parseDirection prefix
-  pure $ MoveCommand direction value
-  where
-    prefix = getPrefix command
-    value = getValue command prefix
+  direction <- parseDirection unparsed_direction
+  pure $ MoveCommand direction $ read $ drop 1 unparsed_value
 
 move :: MoveCommand -> (Int, Int) -> (Int, Int)
 move (MoveCommand Up value) (x, y) = (x, y - value)
