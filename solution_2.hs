@@ -47,8 +47,8 @@ move (MoveCommand Forward value) = Pos value 0
 
 main :: IO ()
 main = do
-  let output = foldMap move
+  let input  = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+      output = foldMap move
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
-  where input   = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
