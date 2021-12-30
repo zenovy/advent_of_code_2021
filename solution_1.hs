@@ -1,9 +1,8 @@
 {-# OPTIONS_GHC -Wall #-}
 
 collect :: [Int] -> Int
-collect []       = 0
-collect (_:[])   = 0
-collect (x:y:xs) = (if (x < y) then 1 else 0) + collect (y:xs)
+collect xs = sum $ zipWith (\x y -> if (x < y) then 1 else 0) xs $ drop 1 xs
+
 
 main :: IO ()
 main = do
