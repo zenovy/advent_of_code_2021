@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wall #-}
+
 import qualified Data.List as List
 
 countBinary :: Char -> (Int, Int) -> (Int, Int)
@@ -21,6 +23,7 @@ binToInt :: String -> Int
 binToInt str = let binaryNum = fmap binToNum (reverse str)
                in sum (fmap (uncurry (*)) (zip binarySequence binaryNum))
 
+main :: IO ()
 main = do
   let tinput = List.transpose input
   let count = fmap (foldr countBinary (0,0)) tinput
