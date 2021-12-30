@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wall #-}
+
 getPrefix :: String -> String
 getPrefix = takeWhile (/= ' ')
 
@@ -27,6 +29,7 @@ move (x, y) (MoveCommand Up value) = (x, y - value)
 move (x, y) (MoveCommand Down value) = (x, y + value)
 move (x, y) (MoveCommand Forward value) = (x + value, y)
 
+main :: IO ()
 main = do
   let output = foldl move initPos $ fmap parseMoveCommand input
   print output
