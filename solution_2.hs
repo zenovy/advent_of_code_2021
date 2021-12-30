@@ -31,14 +31,14 @@ parseMoveCommand command = do
     prefix = getPrefix command
     value = getValue command prefix
 
-move :: (Int, Int) -> MoveCommand -> (Int, Int)
-move (x, y) (MoveCommand Up value) = (x, y - value)
-move (x, y) (MoveCommand Down value) = (x, y + value)
-move (x, y) (MoveCommand Forward value) = (x + value, y)
+move :: MoveCommand -> (Int, Int) -> (Int, Int)
+move (MoveCommand Up value) (x, y) = (x, y - value)
+move (MoveCommand Down value) (x, y) = (x, y + value)
+move (MoveCommand Forward value) (x, y) = (x + value, y)
 
 main :: IO ()
 main = do
-  let output = foldr (flip move) initPos
+  let output = foldr move initPos
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
