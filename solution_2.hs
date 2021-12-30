@@ -34,6 +34,11 @@ data Pos = Pos
 instance Semigroup Pos where
   Pos x1 y1 <> Pos x2 y2 = Pos (x1 + x2) (y1 + y2)
 
+-- A monoid is any semigroup which has a zero that doesn't change things when
+-- you smush it in.
+instance Monoid Pos where
+  mempty = Pos 0 0
+
 
 move :: MoveCommand -> Pos -> Pos
 move (MoveCommand Up value) pos = pos <> Pos 0 (-value)
@@ -46,5 +51,5 @@ main = do
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
-  where initPos = Pos 0 0
+  where initPos = mempty
         input   = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
