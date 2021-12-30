@@ -1,7 +1,5 @@
 getPrefix :: String -> String
-getPrefix []       = []
-getPrefix (' ':xs) = []
-getPrefix (x:xs)   = x: getPrefix xs
+getPrefix = takeWhile (/= ' ')
 
 getValue :: String -> String -> Int
 getValue command prefix = read (drop (1 + length prefix) command)
