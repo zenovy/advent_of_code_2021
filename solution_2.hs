@@ -40,16 +40,15 @@ instance Monoid Pos where
   mempty = Pos 0 0
 
 
-move :: MoveCommand -> Pos -> Pos
-move (MoveCommand Up value) pos = pos <> Pos 0 (-value)
-move (MoveCommand Down value) pos = pos <> Pos 0 value
-move (MoveCommand Forward value) pos = pos <> Pos value 0
+move :: MoveCommand -> Pos
+move (MoveCommand Up value) = Pos 0 (-value)
+move (MoveCommand Down value) = Pos 0 value
+move (MoveCommand Forward value) = Pos value 0
 
 main :: IO ()
 main = do
-  let output = foldr move initPos
+  let output = foldMap move
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
-  where initPos = mempty
-        input   = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+  where input   = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
