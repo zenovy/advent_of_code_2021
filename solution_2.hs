@@ -6,23 +6,28 @@ getPrefix (x:xs)   = x: getPrefix xs
 getValue :: String -> String -> Int
 getValue command prefix = read (drop (1 + length prefix) command)
 
+data Direction = Up | Down | Forward
+
+parseDirection :: String -> Direction
+parseDirection "up" = Up
+parseDirection "down" = Down
+parseDirection "forward" = Forward
+
 data MoveCommand = MoveCommand
-  { moveDirection :: String
+  { moveDirection :: Direction
   , moveCount :: Int
   }
 
 parseMoveCommand :: String -> MoveCommand
-parseMoveCommand command = MoveCommand prefix value
+parseMoveCommand command = MoveCommand (parseDirection prefix) value
   where
     prefix = getPrefix command
     value = getValue command prefix
 
 move :: (Int, Int) -> MoveCommand -> (Int, Int)
-move (x, y) (MoveCommand prefix value)
-  | prefix == "up"      = (x, y - value)
-  | prefix == "down"    = (x, y + value)
-  | prefix == "forward" = (x + value, y)
-  | otherwise           = error ("Command not defined in string '" ++ prefix ++ "'")
+move (x, y) (MoveCommand Up value) = (x, y - value)
+move (x, y) (MoveCommand Down value) = (x, y + value)
+move (x, y) (MoveCommand Forward value) = (x + value, y)
 
 main = do
   let output = foldl move initPos $ fmap parseMoveCommand input
