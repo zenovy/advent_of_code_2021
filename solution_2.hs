@@ -23,10 +23,16 @@ parseMoveCommand command =
    in MoveCommand <$> parseDirection unparsed_direction
                   <*> readMaybe unparsed_value
 
-move :: MoveCommand -> (Int, Int) -> (Int, Int)
-move (MoveCommand Up value) (x, y) = (x, y - value)
-move (MoveCommand Down value) (x, y) = (x, y + value)
-move (MoveCommand Forward value) (x, y) = (x + value, y)
+data Pos = Pos
+  { posX :: Int
+  , posY :: Int
+  }
+  deriving Show
+
+move :: MoveCommand -> Pos -> Pos
+move (MoveCommand Up value) (Pos x y) = Pos x (y - value)
+move (MoveCommand Down value) (Pos x y) = Pos x (y + value)
+move (MoveCommand Forward value) (Pos x y) = Pos (x + value) y
 
 main :: IO ()
 main = do
@@ -34,5 +40,5 @@ main = do
                -- mapMaybe will throw away any Nothings it comes across
              $ mapMaybe parseMoveCommand input
   print output
-  where initPos = (0,0)
+  where initPos = Pos 0 0
         input   = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
