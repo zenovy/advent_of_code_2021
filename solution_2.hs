@@ -17,13 +17,10 @@ data MoveCommand = MoveCommand
   }
 
 parseMoveCommand :: String -> Maybe MoveCommand
-parseMoveCommand command = do
+parseMoveCommand command =
   let (unparsed_direction, unparsed_value) = break (== ' ') command
-  -- If we fail to parse the direction or the value, we will fail to parse the
-  -- entire move command
-  direction <- parseDirection unparsed_direction
-  value     <- readMaybe $ drop 1 unparsed_value
-  pure $ MoveCommand direction value
+   in MoveCommand <$> parseDirection unparsed_direction
+                  <*> readMaybe (drop 1 unparsed_value)
 
 move :: MoveCommand -> (Int, Int) -> (Int, Int)
 move (MoveCommand Up value) (x, y) = (x, y - value)
