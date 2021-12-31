@@ -49,14 +49,11 @@ binToInt
 
 main :: IO ()
 main = do
-  let tinput :: [[Bool]]
-      tinput = List.transpose input
-
-      count :: [BinCount]
-      count = fmap (foldMap countBinary) tinput
-
-      rate :: (Int -> Int -> Bool) -> [Bool]
-      rate f = fmap (\(BinCount x y) -> f x y) count
+  let rate :: (Int -> Int -> Bool) -> [Bool]
+      rate f
+        = fmap (\(BinCount x y) -> f x y)
+        $ fmap (foldMap countBinary)
+        $ List.transpose input
 
       gammaRate :: [Bool]
       gammaRate = rate (>)
