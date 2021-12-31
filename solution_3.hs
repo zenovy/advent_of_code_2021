@@ -3,9 +3,6 @@
 import qualified Data.List as List
 import Data.Maybe (mapMaybe)
 
-data Bin = O | I
-
-
 data BinCount = BinCount
   { bc0 :: Int
   , bc1 :: Int
@@ -22,13 +19,13 @@ instance Semigroup BinCount where
 instance Monoid BinCount where
   mempty = BinCount 0 0
 
-countBinary :: Bin -> BinCount
-countBinary O = BinCount 1 0
-countBinary I = BinCount 0 1
+countBinary :: Bool -> BinCount
+countBinary False = BinCount 1 0
+countBinary True = BinCount 0 1
 
-parseBinary :: Char -> Maybe Bin
-parseBinary '0' = Just O
-parseBinary '1' = Just I
+parseBinary :: Char -> Maybe Bool
+parseBinary '0' = Just False
+parseBinary '1' = Just True
 parseBinary _ = Nothing
 
 
@@ -53,7 +50,7 @@ binToInt
 
 main :: IO ()
 main = do
-  let tinput :: [[Bin]]
+  let tinput :: [[Bool]]
       tinput = List.transpose input
 
       count :: [BinCount]
