@@ -66,7 +66,7 @@ main = do
       epsilonRate = rate (<)
 
       powerConsumption :: Int
-      powerConsumption = (binToInt gammaRate) * (binToInt epsilonRate)
+      powerConsumption = binToInt gammaRate * binToInt epsilonRate
 
   print ("Gamma Rate: " ++ gammaRate)
   print ("Epsilon Rate: " ++ epsilonRate)
