@@ -64,9 +64,9 @@ main = do
       powerConsumption :: Int
       powerConsumption = binToInt gammaRate * binToInt epsilonRate
 
-  print ("Gamma Rate: " ++ concatMap boolToBin gammaRate)
-  print ("Epsilon Rate: " ++ concatMap boolToBin epsilonRate)
-  print ("Power Consumption: " ++ show powerConsumption)
+  print $ "Gamma Rate: " ++ concatMap boolToBin gammaRate
+  print $ "Epsilon Rate: " ++ concatMap boolToBin epsilonRate
+  print $ "Power Consumption: " ++ show powerConsumption
   where
     input = fmap (mapMaybe parseBinary) ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
 
