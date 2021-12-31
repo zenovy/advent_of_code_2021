@@ -5,9 +5,26 @@ import Data.Maybe (mapMaybe)
 
 data Bin = O | I
 
-countBinary :: Bin -> (Int, Int) -> (Int, Int)
-countBinary O (a,b) = (a + 1, b)
-countBinary I (a,b) = (a, b + 1)
+
+data BinCount = BinCount
+  { bc0 :: Int
+  , bc1 :: Int
+  }
+  deriving Show
+
+-- A semigroup is any type which can be smushed into itself. Here we define
+-- smushing via pointwise addition.
+instance Semigroup BinCount where
+  BinCount x1 y1 <> BinCount x2 y2 = BinCount (x1 + x2) (y1 + y2)
+
+-- A monoid is any semigroup which has a zero that doesn't change things when
+-- you smush it in.
+instance Monoid BinCount where
+  mempty = BinCount 0 0
+
+countBinary :: Bin -> BinCount
+countBinary O = BinCount 1 0
+countBinary I = BinCount 0 1
 
 parseBinary :: Char -> Maybe Bin
 parseBinary '0' = Just O
@@ -34,8 +51,8 @@ binToInt str = let binaryNum = fmap binToNum (reverse str)
 main :: IO ()
 main = do
   let tinput = List.transpose input
-  let count = fmap (foldr countBinary (0,0)) tinput
-  let rate f = fmap boolToBin (fmap (uncurry f) count)
+  let count = fmap (foldMap countBinary) tinput
+  let rate f = fmap boolToBin (fmap (\(BinCount x y) -> f x y) count)
   let gammaRate = rate (>)
   let epsilonRate = rate (<)
   let powerConsumption = (binToInt gammaRate) * (binToInt epsilonRate)
