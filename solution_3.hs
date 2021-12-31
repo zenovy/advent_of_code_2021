@@ -45,8 +45,7 @@ binToNum '1' = 1
 binToNum _ = error "Not a binary number"
 
 binToInt :: String -> Int
-binToInt str = let binaryNum = fmap binToNum (reverse str)
-               in sum $ fmap (uncurry (*)) $ zip binarySequence binaryNum
+binToInt str = sum $ fmap (uncurry (*)) $ zip binarySequence $ fmap binToNum $ reverse str
 
 main :: IO ()
 main = do
