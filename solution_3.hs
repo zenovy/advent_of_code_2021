@@ -33,7 +33,7 @@ parseBinary _ = Nothing
 
 
 binarySequence :: [Int]
-binarySequence = fmap (2^) [0 :: Int ..]
+binarySequence = iterate (2 *) 1
 
 boolToBin :: Bool -> Char
 boolToBin True = '1'
