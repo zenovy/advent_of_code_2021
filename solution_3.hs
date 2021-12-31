@@ -39,17 +39,16 @@ boolToBin :: Bool -> Char
 boolToBin True = '1'
 boolToBin False = '0'
 
-binToNum :: Char -> Maybe Int
-binToNum '0' = Just 0
-binToNum '1' = Just 1
-binToNum _ = Nothing
+boolToNum :: Bool -> Int
+boolToNum False = 0
+boolToNum True = 1
 
-binToInt :: String -> Int
+binToInt :: [Bool] -> Int
 binToInt
   = sum
   . fmap (uncurry (*))
   . zip binarySequence
-  . mapMaybe binToNum
+  . fmap boolToNum
   . reverse
 
 main :: IO ()
@@ -60,20 +59,20 @@ main = do
       count :: [BinCount]
       count = fmap (foldMap countBinary) tinput
 
-      rate :: (Int -> Int -> Bool) -> String
-      rate f = fmap boolToBin (fmap (\(BinCount x y) -> f x y) count)
+      rate :: (Int -> Int -> Bool) -> [Bool]
+      rate f = fmap (\(BinCount x y) -> f x y) count
 
-      gammaRate :: String
+      gammaRate :: [Bool]
       gammaRate = rate (>)
 
-      epsilonRate :: String
+      epsilonRate :: [Bool]
       epsilonRate = rate (<)
 
       powerConsumption :: Int
       powerConsumption = binToInt gammaRate * binToInt epsilonRate
 
-  print ("Gamma Rate: " ++ gammaRate)
-  print ("Epsilon Rate: " ++ epsilonRate)
+  print ("Gamma Rate: " ++ fmap boolToBin gammaRate)
+  print ("Epsilon Rate: " ++ fmap  boolToBin epsilonRate)
   print ("Power Consumption: " ++ show powerConsumption)
   where
     input = fmap (mapMaybe parseBinary) ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
