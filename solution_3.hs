@@ -39,17 +39,17 @@ boolToBin :: Bool -> Char
 boolToBin True = '1'
 boolToBin False = '0'
 
-binToNum :: Char -> Int
-binToNum '0' = 0
-binToNum '1' = 1
-binToNum _ = error "Not a binary number"
+binToNum :: Char -> Maybe Int
+binToNum '0' = Just 0
+binToNum '1' = Just 1
+binToNum _ = Nothing
 
 binToInt :: String -> Int
 binToInt
   = sum
   . fmap (uncurry (*))
   . zip binarySequence
-  . fmap binToNum
+  . mapMaybe binToNum
   . reverse
 
 main :: IO ()
