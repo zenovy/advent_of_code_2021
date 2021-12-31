@@ -50,12 +50,24 @@ binToInt str = let binaryNum = fmap binToNum (reverse str)
 
 main :: IO ()
 main = do
-  let tinput = List.transpose input
-  let count = fmap (foldMap countBinary) tinput
-  let rate f = fmap boolToBin (fmap (\(BinCount x y) -> f x y) count)
-  let gammaRate = rate (>)
-  let epsilonRate = rate (<)
-  let powerConsumption = (binToInt gammaRate) * (binToInt epsilonRate)
+  let tinput :: [[Bin]]
+      tinput = List.transpose input
+
+      count :: [BinCount]
+      count = fmap (foldMap countBinary) tinput
+
+      rate :: (Int -> Int -> Bool) -> String
+      rate f = fmap boolToBin (fmap (\(BinCount x y) -> f x y) count)
+
+      gammaRate :: String
+      gammaRate = rate (>)
+
+      epsilonRate :: String
+      epsilonRate = rate (<)
+
+      powerConsumption :: Int
+      powerConsumption = (binToInt gammaRate) * (binToInt epsilonRate)
+
   print ("Gamma Rate: " ++ gammaRate)
   print ("Epsilon Rate: " ++ epsilonRate)
   print ("Power Consumption: " ++ show powerConsumption)
