@@ -45,7 +45,12 @@ binToNum '1' = 1
 binToNum _ = error "Not a binary number"
 
 binToInt :: String -> Int
-binToInt = sum . fmap (uncurry (*)) . zip binarySequence . fmap binToNum . reverse
+binToInt
+  = sum
+  . fmap (uncurry (*))
+  . zip binarySequence
+  . fmap binToNum
+  . reverse
 
 main :: IO ()
 main = do
